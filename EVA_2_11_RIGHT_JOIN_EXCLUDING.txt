@@ -1,0 +1,292 @@
+
+ MySQL  localhost:3306 ssl  sakila  SQL > \USE EVA_2
+Unknown command: '\USE EVA_2'
+ MySQL  localhost:3306 ssl  sakila  SQL > \use eva_2
+Default schema set to `eva_2`.
+Fetching table and column names from `eva_2` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from ablaa;
+ERROR: 1146 (42S02): Table 'eva_2.ablaa' doesn't exist
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaa;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  5 | E      |
++----+--------+
+5 rows in set (0.2381 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | X      |
+|  4 | Y      |
++----+--------+
+4 rows in set (0.0463 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre,
+                                      -> b,nombre
+                                      -> from tablaa a
+                                      -> inner join tablab b on a.nombre = b.nombre;
+ERROR: 1054 (42S22): Unknown column 'b' in 'field list'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a  inner join tablab b on a.nombre = b.nombre;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | A      |
+| B      | B      |
++--------+--------+
+2 rows in set (0.0124 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a  left  join tablab b on a.nombre = b.nombre;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | A      |
+| B      | B      |
+| C      | NULL   |
+| D      | NULL   |
+| E      | NULL   |
++--------+--------+
+5 rows in set (0.0017 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a  rigth join tablab b on a.nombre = b.nombre;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rigth join tablab b on a.nombre = b.nombre' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a right join tablab b on a.nombre = b.nombre;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | A      |
+| B      | B      |
+| NULL   | X      |
+| NULL   | Y      |
++--------+--------+
+4 rows in set (0.0026 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a right join tablab b on a.nombre = b.nombre where a.nombre is null;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| NULL   | X      |
+| NULL   | Y      |
++--------+--------+
+2 rows in set (0.0037 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select a.nombre, b.nombre from tablaa a right join tablab b on a.nombre = b.nombre where a.nombre is not null;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | A      |
+| B      | B      |
++--------+--------+
+2 rows in set (0.0582 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table alumnos(alumno_id int, nombre varchar(50));
+Query OK, 0 rows affected (5.4406 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table alumnos change alumno_id alumno_id int auto_increment key;
+Query OK, 0 rows affected (3.5724 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table materias ( id_materias int key auto_increment, nombre varchar(50));
+Query OK, 0 rows affected (0.9165 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table inscripciones (id int key auto_increment, id_alumnos int, id_materias int);
+Query OK, 0 rows affected (0.7962 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into alumnos (nombre) values("juan","pedro","adriana");
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into alumnos (nombre) values("juan"),("pedro"),("adriana");
+Query OK, 3 rows affected (0.2727 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into materias (nombre) values("orientada_objetos"),("Base_de_datos"),("estructura");
+Query OK, 3 rows affected (0.2181 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc alumnos:
+                                      -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| alumno_id | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre    | varchar(50) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0448 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc materias;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_materias | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0057 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc inscripciones;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| id          | int(11) | NO   | PRI | NULL    | auto_increment |
+| id_alumnos  | int(11) | YES  |     | NULL    |                |
+| id_materias | int(11) | YES  |     | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+3 rows in set (0.0091 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into inscripciones (alumno_id, id_materias) values (1,1),(2,2);
+ERROR: 1054 (42S22): Unknown column 'alumno_id' in 'field list'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into inscripciones (id_alumnos, id_materias) values (1,1),(2,2);
+Query OK, 2 rows affected (0.2050 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from alumno;
+ERROR: 1146 (42S02): Table 'eva_2.alumno' doesn't exist
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from alumnos;
++-----------+---------+
+| alumno_id | nombre  |
++-----------+---------+
+|         1 | juan    |
+|         2 | pedro   |
+|         3 | adriana |
++-----------+---------+
+3 rows in set (0.0609 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from materias;
++-------------+-------------------+
+| id_materias | nombre            |
++-------------+-------------------+
+|           1 | orientada_objetos |
+|           2 | Base_de_datos     |
+|           3 | estructura        |
++-------------+-------------------+
+3 rows in set (0.0778 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from inscripciones;
++----+------------+-------------+
+| id | id_alumnos | id_materias |
++----+------------+-------------+
+|  1 |          1 |           1 |
+|  2 |          2 |           2 |
++----+------------+-------------+
+2 rows in set (0.0697 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia
+                                      -> from alumnos A
+                                      -> inner join inscripciones B on A.id_alumnos = b.id_alumnos
+                                      -> inner join materias C on C.id_materias = b.id_materias;
+ERROR: 1054 (42S22): Unknown column 'A.id_alumnos' in 'on clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| alumno_id | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre    | varchar(50) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.1193 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A inner join inscripciones B on A.alumno_id = b.id_alumnos inner join materias C on C.id_materias = b.id_materias;
++--------+-------------------+
+| alumno | materia           |
++--------+-------------------+
+| juan   | orientada_objetos |
+| pedro  | Base_de_datos     |
++--------+-------------------+
+2 rows in set (0.0016 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A left join inscripciones B on A.alumno_id = b.id_alumnos left join materias C on C.id_materias = b.id_materias;
++---------+-------------------+
+| alumno  | materia           |
++---------+-------------------+
+| juan    | orientada_objetos |
+| pedro   | Base_de_datos     |
+| adriana | NULL              |
++---------+-------------------+
+3 rows in set (0.0027 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A left join inscripciones B on A.alumno_id = b.id_alumnos left join materias C on C.id_materias = b.id_materias where C.id_materias is null;
++---------+---------+
+| alumno  | materia |
++---------+---------+
+| adriana | NULL    |
++---------+---------+
+1 row in set (0.0510 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.id_materias;
++--------+-------------------+
+| alumno | materia           |
++--------+-------------------+
+| juan   | orientada_objetos |
+| pedro  | Base_de_datos     |
+| NULL   | estructura        |
++--------+-------------------+
+3 rows in set (0.0017 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.id_materias is null;
+Empty set (0.0027 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.id_alumnos is null;
+ERROR: 1054 (42S22): Unknown column 'C.id_alumnos' in 'where clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.id_alumno is null;
+ERROR: 1054 (42S22): Unknown column 'C.id_alumno' in 'where clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.alumnos_id is null;
+ERROR: 1054 (42S22): Unknown column 'C.alumnos_id' in 'where clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.alumno_id is null;
+ERROR: 1054 (42S22): Unknown column 'C.alumno_id' in 'where clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc inscripciones;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| id          | int(11) | NO   | PRI | NULL    | auto_increment |
+| id_alumnos  | int(11) | YES  |     | NULL    |                |
+| id_materias | int(11) | YES  |     | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+3 rows in set (0.0065 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where C.id_alumnos is null;
+ERROR: 1054 (42S22): Unknown column 'C.id_alumnos' in 'where clause'
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where a.nombre is null;
++--------+------------+
+| alumno | materia    |
++--------+------------+
+| NULL   | estructura |
++--------+------------+
+1 row in set (0.0020 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as alumno, c.nombre as materia from alumnos A left join inscripciones B on A.alumno_id = b.id_alumnos left join materias C on C.id_materias = b.id_materias where C.id_materias is null
+
+                                      -> union
+                                      -> select A.nombre as alumno, c.nombre as materia from alumnos A right join inscripciones B on A.alumno_id = b.id_alumnos right join materias C on C.id_materias = b.id_materias where a.nombre is null;
++---------+------------+
+| alumno  | materia    |
++---------+------------+
+| adriana | NULL       |
+| NULL    | estructura |
++---------+------------+
+2 rows in set (0.0788 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL >
